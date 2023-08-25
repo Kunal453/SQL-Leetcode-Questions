@@ -104,11 +104,21 @@ Return the result table sorted by id in ascending order.
 
       select distinct author_id as id from views where author_id = viewer_id order by id asc;
 
-## 5. 
+## 5. Invalid Tweets
 Input:-
 
-
+| tweet_id | content                          |
+| -------- | -------------------------------- |
+| 1        | Vote for Biden                   |
+| 2        | Let us make America great again! |
 
 Output:-
 
+| tweet_id |
+| -------- |
+| 2        |
 
+Write a solution to find the IDs of the invalid tweets. The tweet is invalid if the number of characters used in the content of the tweet is strictly greater than 15.
+Return the result table in any order.
+              
+       select tweet_id from Tweets where length(content) >= 15;
