@@ -128,3 +128,180 @@ Output:-
 | 0          | 0.894           |
 | 1          | 0.995           |
 | 2          | 1.456           |
+
+## 6. Employee Bonus
+Write an SQL query to report the name and bonus amount of each employee with a bonus less than 1000.
+Employee:-
+| empId | name   | supervisor | salary |
+| ----- | ------ | ---------- | ------ |
+| 3     | Brad   | null       | 4000   |
+| 1     | John   | 3          | 1000   |
+| 2     | Dan    | 3          | 2000   |
+| 4     | Thomas | 3          | 4000   |
+
+Bonus:-
+| empId | bonus |
+| ----- | ----- |
+| 2     | 500   |
+| 4     | 2000  |
+
+            select  e.name , b.bonus from Employee as e left join Bonus as b on e.empId = b.empId where b.bonus<1000 or b.bonus is null;
+Output:-
+| name | bonus |
+| ---- | ----- |
+| Brad | null  |
+| John | null  |
+| Dan  | 500   |
+
+## 6. Students and Examinations
+Write a solution to find the number of times each student attended each exam.
+Return the result table ordered by student_id and subject_name.
+Students :-
+| student_id | student_name |
+| ---------- | ------------ |
+| 1          | Alice        |
+| 2          | Bob          |
+| 13         | John         |
+| 6          | Alex         |
+
+Subjects:-
+| subject_name |
+| ------------ |
+| Math         |
+| Physics      |
+| Programming  |
+
+Examinations:-
+| student_id | subject_name |
+| ---------- | ------------ |
+| 1          | Math         |
+| 1          | Physics      |
+| 1          | Programming  |
+| 2          | Programming  |
+| 1          | Physics      |
+| 1          | Math         |
+| 13         | Math         |
+| 13         | Programming  |
+| 13         | Physics      |
+| 2          | Math         |
+| 1          | Math         |
+
+                  select s.student_id, s.student_name, sb.subject_name, count(e.subject_name) as attended_exams  from 
+                  Students as s join Subjects as sb left join  Examinations as e on
+                  s.student_id = e.student_id and sb.subject_name=e.subject_name 
+                  group by s.student_id, sb.subject_name  
+                  order by s.student_id, sb.subject_name;
+Output:-
+| student_id | student_name | subject_name | attended_exams |
+| ---------- | ------------ | ------------ | -------------- |
+| 1          | Alice        | Math         | 3              |
+| 1          | Alice        | Physics      | 2              |
+| 1          | Alice        | Programming  | 1              |
+| 2          | Bob          | Math         | 1              |
+| 2          | Bob          | Physics      | 0              |
+| 2          | Bob          | Programming  | 1              |
+| 6          | Alex         | Math         | 0              |
+| 6          | Alex         | Physics      | 0              |
+| 6          | Alex         | Programming  | 0              |
+| 13         | John         | Math         | 1              |
+| 13         | John         | Physics      | 1              |
+| 13         | John         | Programming  | 1              |
+
+## 7. Managers with at Least 5 Direct Reports
+Write a solution to find managers with at least five direct reports.
+Employee:-
+| id  | name  | department | managerId |
+| --- | ----- | ---------- | --------- |
+| 101 | John  | A          | null      |
+| 102 | Dan   | A          | 101       |
+| 103 | James | A          | 101       |
+| 104 | Amy   | A          | 101       |
+| 105 | Anne  | A          | 101       |
+| 106 | Ron   | B          | 101       |
+
+            select m.name from Employee as e inner join Employee as m on e.id= m.managerId 
+            group by e.managerId having count(e.id)>=5; 
+Output:-
+| name |
+| ---- |
+| John |
+
+## 8. Confirmation Rate
+The confirmation rate of a user is the number of 'confirmed' messages divided by the total number of requested confirmation messages. The confirmation rate of a user that did not request any confirmation messages is 0. Round the confirmation rate to two decimal places.
+Write an SQL query to find the confirmation rate of each user.
+
+Signups:-
+| user_id | time_stamp          |
+| ------- | ------------------- |
+| 3       | 2020-03-21 10:16:13 |
+| 7       | 2020-01-04 13:57:59 |
+| 2       | 2020-07-29 23:09:44 |
+| 6       | 2020-12-09 10:39:37 |
+
+Confirmations:-
+| user_id | time_stamp          | action    |
+| ------- | ------------------- | --------- |
+| 3       | 2021-01-06 03:30:46 | timeout   |
+| 3       | 2021-07-14 14:00:00 | timeout   |
+| 7       | 2021-06-12 11:57:29 | confirmed |
+| 7       | 2021-06-13 12:58:28 | confirmed |
+| 7       | 2021-06-14 13:59:27 | confirmed |
+| 2       | 2021-01-22 00:00:00 | confirmed |
+| 2       | 2021-02-28 23:59:59 | timeout   |
+
+            select s.user_id, round(sum(case when action = 'confirmed' then 1 else o end) /count(1),2) as confirmation_rate 
+            from Signups as s left join Confirmations as c on s.user_id = c.user_id group by user_id;
+Output:-
+| user_id | confirmation_rate |
+| ------- | ----------------- |
+| 3       | 0                 |
+| 7       | 1                 |
+| 2       | 0.5               |
+| 6       | 0                 |
+
+## 9. Not Boring Movies
+Write a solution to report the movies with an odd-numbered ID and a description that is not "boring".
+Return the result table ordered by rating in descending order.
+Cinema:-
+| id | movie      | description | rating |
+| -- | ---------- | ----------- | ------ |
+| 1  | War        | great 3D    | 8.9    |
+| 2  | Science    | fiction     | 8.5    |
+| 3  | irish      | boring      | 6.2    |
+| 4  | Ice song   | Fantacy     | 8.6    |
+| 5  | House card | Interesting | 9.1    |
+
+            select  id, movie, description, rating from Cinema where id%2!= 0 and description != 'boring' order by rating desc;
+Output:-
+| id | movie      | description | rating |
+| -- | ---------- | ----------- | ------ |
+| 5  | House card | Interesting | 9.1    |
+| 1  | War        | great 3D    | 8.9    |
+
+## 10. Average Selling Price
+Write an SQL query to find the average selling price for each product. average_price should be rounded to 2 decimal places.
+Prices:-
+| product_id | start_date | end_date   | price |
+| ---------- | ---------- | ---------- | ----- |
+| 1          | 2019-02-17 | 2019-02-28 | 5     |
+| 1          | 2019-03-01 | 2019-03-22 | 20    |
+| 2          | 2019-02-01 | 2019-02-20 | 15    |
+| 2          | 2019-02-21 | 2019-03-31 | 30    |
+
+UnitsSold:-
+| product_id | purchase_date | units |
+| ---------- | ------------- | ----- |
+| 1          | 2019-02-25    | 100   |
+| 1          | 2019-03-01    | 15    |
+| 2          | 2019-02-10    | 200   |
+| 2          | 2019-03-22    | 30    |
+
+            select p.product_id , round(sum(p.price*u.units)/sum(u.units),2) as average_price from Prices as p left join UnitsSold as u on                p.product_id=u.product_id and u.purchase_date between p.start_date and p.end_date group by p.product_id;
+
+Output:-
+| product_id | average_price |
+| ---------- | ------------- |
+| 1          | 6.96          |
+| 2          | 16.96         |
+
+## 11. 
