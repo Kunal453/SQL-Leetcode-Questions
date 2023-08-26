@@ -429,4 +429,46 @@ Output:-
 | 2019-01 | US      | 1           | 1              | 2000               | 2000                  |
 | 2019-01 | DE      | 1           | 1              | 2000               | 2000                  |
 
-## 14. 
+## 14. Immediate Food Delivery II
+If the customer's preferred delivery date is the same as the order date, then the order is called immediate; otherwise, it is called scheduled.
+The first order of a customer is the order with the earliest order date that the customer made. It is guaranteed that a customer has precisely one first order.
+Write an SQL query to find the percentage of immediate orders in the first orders of all customers, rounded to 2 decimal places.
+Delivery:-
+| delivery_id | customer_id | order_date | customer_pref_delivery_date |
+| ----------- | ----------- | ---------- | --------------------------- |
+| 1           | 1           | 2019-08-01 | 2019-08-02                  |
+| 2           | 2           | 2019-08-02 | 2019-08-02                  |
+| 3           | 1           | 2019-08-11 | 2019-08-12                  |
+| 4           | 3           | 2019-08-24 | 2019-08-24                  |
+| 5           | 3           | 2019-08-21 | 2019-08-22                  |
+| 6           | 2           | 2019-08-11 | 2019-08-13                  |
+| 7           | 4           | 2019-08-09 | 2019-08-09                  |
+
+            select round(avg(order_date = customer_pref_delivery_date)*100,2) as immediate_percentage
+            from delivery 
+            where (customer_id,order_date) in (select customer_id,min(order_date) from Delivery group by customer_id);
+
+Output:-
+| immediate_percentage |
+| -------------------- |
+| 50                   |
+
+## 15. Game Play Analysis IV
+Write a solution to report the fraction of players that logged in again on the day after the day they first logged in, rounded to 2 decimal places. In other words, you need to count the number of players that logged in for at least two consecutive days starting from their first login date, then divide that number by the total number of players.
+Activity:-
+| player_id | device_id | event_date | games_played |
+| --------- | --------- | ---------- | ------------ |
+| 1         | 2         | 2016-03-01 | 5            |
+| 1         | 2         | 2016-03-02 | 6            |
+| 2         | 3         | 2017-06-25 | 1            |
+| 3         | 1         | 2016-03-02 | 0            |
+| 3         | 4         | 2018-07-03 | 5            |
+
+            select round(sum(login)/ count(distinct player_id),2) as fraction from
+            (select player_id,datediff(event_date,min(event_date) 
+            over (partition by player_id)) = 1 as login from activity ) as t;
+
+Output:-
+| fraction |
+| -------- |
+| 0.33     |
