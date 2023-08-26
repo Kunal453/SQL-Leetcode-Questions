@@ -304,4 +304,30 @@ Output:-
 | 1          | 6.96          |
 | 2          | 16.96         |
 
-## 11. 
+## 11. Project Employees I
+Write an SQL query that reports the average experience years of all the employees for each project, rounded to 2 digits.
+Project:-
+| project_id | employee_id |
+| ---------- | ----------- |
+| 1          | 1           |
+| 1          | 2           |
+| 1          | 3           |
+| 2          | 1           |
+| 2          | 4           |
+
+Employee:-
+| employee_id | name   | experience_years |
+| ----------- | ------ | ---------------- |
+| 1           | Khaled | 3                |
+| 2           | Ali    | 2                |
+| 3           | John   | 1                |
+| 4           | Doe    | 2                |
+
+            select p.project_id , round(avg(e.experience_years),2) as average_years from Project as p left join Employee as e on              
+            p.employee_id = e.employee_id group by p.project_id;
+
+Output:-
+| project_id | average_years |
+| ---------- | ------------- |
+| 1          | 2             |
+| 2          | 2.5           |
