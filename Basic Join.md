@@ -370,4 +370,36 @@ Output:-
 | 215        | 66.67      |
 | 207        | 33.33      |
 
-## 13. 
+## 13. Queries Quality and Percentage 
+We define query quality as:
+The average of the ratio between query rating and its position.
+We also define poor query percentage as:
+The percentage of all queries with rating less than 3.
+Write an SQL query to find each query_name, the quality and poor_query_percentage.
+Both quality and poor_query_percentage should be rounded to 2 decimal places.
+Quaries:-
+| query_name | result           | position | rating |
+| ---------- | ---------------- | -------- | ------ |
+| Dog        | Golden Retriever | 1        | 5      |
+| Dog        | German Shepherd  | 2        | 5      |
+| Dog        | Mule             | 200      | 1      |
+| Cat        | Shirazi          | 5        | 2      |
+| Cat        | Siamese          | 3        | 3      |
+| Cat        | Sphynx           | 7        | 4      |
+
+            select query_name ,round(avg(rating / position),2) as quality, 
+            round(sum(rating<3)/count(query_name)*100,2) as poor_query_percentage
+            from Queries
+            group by query_name;
+
+Output:-
+| query_name | result           | position | rating |
+| ---------- | ---------------- | -------- | ------ |
+| Dog        | Golden Retriever | 1        | 5      |
+| Dog        | German Shepherd  | 2        | 5      |
+| Dog        | Mule             | 200      | 1      |
+| Cat        | Shirazi          | 5        | 2      |
+| Cat        | Siamese          | 3        | 3      |
+| Cat        | Sphynx           | 7        | 4      |
+
+## 14. 
