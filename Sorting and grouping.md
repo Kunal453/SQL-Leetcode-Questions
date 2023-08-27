@@ -11,11 +11,64 @@ Teacher:-
 | 2          | 3          | 1       |
 | 2          | 4          | 1       |
 
-       select teacher_id, count(distinct subject_id) as cnt from Teacher group by teacher_id;
+              select teacher_id, count(distinct subject_id) as cnt from Teacher group by teacher_id;
 Output:-
 | teacher_id | cnt |
 | ---------- | --- |
 | 1          | 2   |
 | 2          | 4   |
 
-## 2.
+## 2.User Activity for the Past 30 Days I
+Write a solution to find the daily active user count for a period of 30 days ending 2019-07-27 inclusively. A user was active on someday if they made at least one activity on that day.
+Activity:-
+| user_id | session_id | activity_date | activity_type |
+| ------- | ---------- | ------------- | ------------- |
+| 1       | 1          | 2019-07-20    | open_session  |
+| 1       | 1          | 2019-07-20    | scroll_down   |
+| 1       | 1          | 2019-07-20    | end_session   |
+| 2       | 4          | 2019-07-20    | open_session  |
+| 2       | 4          | 2019-07-21    | send_message  |
+| 2       | 4          | 2019-07-21    | end_session   |
+| 3       | 2          | 2019-07-21    | open_session  |
+| 3       | 2          | 2019-07-21    | send_message  |
+| 3       | 2          | 2019-07-21    | end_session   |
+| 4       | 3          | 2019-06-25    | open_session  |
+| 4       | 3          | 2019-06-25    | end_session   |
+
+              select activity_date as day , count(distinct user_id) as active_users 
+              from Activity 
+              group by activity_date
+              having activity_date>="2019-06-28" and activity_date<="2019-07-27"
+Output:-
+| day        | active_users |
+| ---------- | ------------ |
+| 2019-07-20 | 2            |
+| 2019-07-21 | 2            |
+
+## 3. Product Sales Analysis III
+Write a solution to select the product id, year, quantity, and price for the first year of every product sold.
+Sales:-
+| sale_id | product_id | year | quantity | price |
+| ------- | ---------- | ---- | -------- | ----- |
+| 1       | 100        | 2008 | 10       | 5000  |
+| 2       | 100        | 2009 | 12       | 5000  |
+| 7       | 200        | 2011 | 15       | 9000  |
+
+Product:-
+| product_id | product_name |
+| ---------- | ------------ |
+| 100        | Nokia        |
+| 200        | Apple        |
+| 300        | Samsung      |
+
+              SELECT product_id, year AS first_year, quantity, price
+              FROM Sales
+              WHERE (product_id, year) in 
+              (SELECT product_id, MIN(year) 
+              FROM Sales GROUP BY product_id)
+
+Output:-
+| product_id | first_year | quantity | price |
+| ---------- | ---------- | -------- | ----- |
+| 100        | 2008       | 10       | 5000  |
+| 200        | 2011       | 15       | 9000  |
