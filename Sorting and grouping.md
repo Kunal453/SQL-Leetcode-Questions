@@ -73,7 +73,52 @@ Output:-
 | 100        | 2008       | 10       | 5000  |
 | 200        | 2011       | 15       | 9000  |
 
-## 4 Biggest Single Number.
+## 4 Classes More Than 5 Students
+Write a solution to find all the classes that have at least five students.
+Return the result table in any order.
+Courses:-
+| student | class    |
+| ------- | -------- |
+| A       | Math     |
+| B       | English  |
+| C       | Math     |
+| D       | Biology  |
+| E       | Math     |
+| F       | Computer |
+| G       | Math     |
+| H       | Math     |
+| I       | Math     |
+
+                  select class from Courses group by class having count(student)>=5;
+Output:-
+| class |
+| ----- |
+| Math  |
+
+## 5 Find Followers Count
+Write a solution that will, for each user, return the number of followers.
+Return the result table ordered by user_id in ascending order
+Folloers:-
+| user_id | follower_id |
+| ------- | ----------- |
+| 0       | 1           |
+| 1       | 0           |
+| 2       | 0           |
+| 2       | 1           |
+
+                        select distinct user_id , count(distinct follower_id) as followers_count from
+                        Followers
+                        GROUP BY user_id
+                        ORDER BY user_id;
+Output:-
+| user_id | followers_count |
+| ------- | --------------- |
+| 0       | 1               |
+| 1       | 1               |
+| 2       | 2               |
+
+
+## 6 Biggest Single Number.
 A single number is a number that appeared only once in the MyNumbers table.
 Find the largest single number. If there is no single number, report null.
 Mynumbers:-
@@ -97,3 +142,32 @@ Output:-
 | num |
 | --- |
 | 6   |
+
+## 7 Customers Who Bought All Products
+Write a solution to report the customer ids from the Customer table that bought all the products in the Product table.
+Return the result table in any order.
+Customer:-
+| customer_id | product_key |
+| ----------- | ----------- |
+| 1           | 5           |
+| 2           | 6           |
+| 3           | 5           |
+| 3           | 6           |
+| 1           | 6           |
+
+Product:-
+| product_key |
+| ----------- |
+| 5           |
+| 6           |
+
+            select customer_id from Customer group by customer_id 
+            having count(distinct product_key) = (select count(*) from Product);
+
+Output:-
+| customer_id |
+| ----------- |
+| 1           |
+| 3           |
+
+
