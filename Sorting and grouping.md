@@ -73,5 +73,27 @@ Output:-
 | 100        | 2008       | 10       | 5000  |
 | 200        | 2011       | 15       | 9000  |
 
-## 4
-Write the SQL query 
+## 4 Biggest Single Number.
+A single number is a number that appeared only once in the MyNumbers table.
+Find the largest single number. If there is no single number, report null.
+Mynumbers:-
+| num |
+| --- |
+| 8   |
+| 8   |
+| 3   |
+| 3   |
+| 1   |
+| 4   |
+| 5   |
+| 6   |
+
+              select max(num) as num from 
+              (
+                select num from Mynumbers group by num having count(num) = 1
+              ) as num
+
+Output:-
+| num |
+| --- |
+| 6   |
