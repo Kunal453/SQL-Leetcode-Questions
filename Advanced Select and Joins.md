@@ -14,18 +14,45 @@ Employess:-
                   e1.employee_id, e1.name,
                   COUNT(e1.employee_id) AS reports_count,
                   ROUND(AVG(e2.age), 0) AS average_age
-                FROM 
-                  Employees e1
-                JOIN 
-                  Employees e2
-                ON 
-                  e1.employee_id = e2.reports_to
-                GROUP BY 
-                  employee_id
-                ORDER BY 
-                  employee_id;
+                  FROM 
+                    Employees e1
+                  JOIN 
+                    Employees e2
+                  ON 
+                    e1.employee_id = e2.reports_to
+                  GROUP BY 
+                    employee_id
+                  ORDER BY 
+                    employee_id;
 
 Output:-
 | employee_id | name  | reports_count | average_age |
 | ----------- | ----- | ------------- | ----------- |
 | 9           | Hercy | 2             | 39          |
+
+## 2. Primary Department for Each Employee
+Employees can belong to multiple departments. When the employee joins other departments, they need to decide which department is their primary department. Note that when an employee belongs to only one department, their primary column is 'N'.
+Write a solution to report all the employees with their primary department. For employees who belong to one department, report their only department.
+Return the result table in any order.
+Employee:-
+| employee_id | department_id | primary_flag |
+| ----------- | ------------- | ------------ |
+| 1           | 1             | N            |
+| 2           | 1             | Y            |
+| 2           | 2             | N            |
+| 3           | 3             | N            |
+| 4           | 2             | N            |
+| 4           | 3             | Y            |
+| 4           | 4             | N            |
+
+              select employee_id, department_id from Employee
+              group by employee_id having count (employee_id) =1
+              union
+              select employee_id, department_id from Employee where primary_flag = "Y";
+Output:-
+| employee_id | department_id |
+| ----------- | ------------- |
+| 1           | 1             |
+| 3           | 3             |
+| 2           | 1             |
+| 4           | 3             |
