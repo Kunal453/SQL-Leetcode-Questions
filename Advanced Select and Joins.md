@@ -56,3 +56,20 @@ Output:-
 | 3           | 3             |
 | 2           | 1             |
 | 4           | 3             |
+
+## 3. Triangle Judgement
+Report for every three line segments whether they can form a triangle.
+Return the result table in any order.
+Triangle:-
+| x  | y  | z  |
+| -- | -- | -- |
+| 13 | 15 | 30 |
+| 10 | 20 | 15 |
+
+          select * , if(x+y>z and x+z>y and y+z>x , "Yes", "No") as triangle from Triangle;
+
+Output:-
+| x  | y  | z  | triangle |
+| -- | -- | -- | -------- |
+| 13 | 15 | 30 | No       |
+| 10 | 20 | 15 | Yes      |
