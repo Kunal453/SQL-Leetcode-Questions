@@ -73,3 +73,32 @@ Output:-
 | -- | -- | -- | -------- |
 | 13 | 15 | 30 | No       |
 | 10 | 20 | 15 | Yes      |
+
+## 4. Consecutive Numbers
+Find all numbers that appear at least three times consecutively.
+Return the result table in any order.
+The result format is in the following example.
+Logs:-
+| id | num |
+| -- | --- |
+| 1  | 1   |
+| 2  | 1   |
+| 3  | 1   |
+| 4  | 2   |
+| 5  | 1   |
+| 6  | 2   |
+| 7  | 2   |
+
+In SQL, id is the primary key for this table.
+id is an autoincrement column.
+Explanation: 1 is the only number that appears consecutively for at least three times.
+
+     select distinct (a.num) as ConsectiveNums
+     from logs a, logs b, logs c
+     where a.id = b.id+1 and b.id = c.id+1 and
+     a.num=b.num and b.num=c.num;
+
+Output:
+| ConsecutiveNums |
+| --------------- |
+| 1               |
