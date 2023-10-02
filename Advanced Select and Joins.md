@@ -155,3 +155,40 @@ Output:-
 | person_name |
 | ----------- |
 | John Cena   |
+
+## 7. Count Salary Categories
+Write a solution to calculate the number of bank accounts for each salary category. The salary categories are:
+"Low Salary": All the salaries strictly less than $20000.
+"Average Salary": All the salaries in the inclusive range [$20000, $50000].
+"High Salary": All the salaries strictly greater than $50000.
+The result table must contain all three categories. If there are no accounts in a category, return 0.
+Accounts:-
+| account_id | income |
+| ---------- | ------ |
+| 3          | 108939 |
+| 2          | 12747  |
+| 8          | 87709  |
+| 6          | 91796  |
+
+                      
+                                  select "Low Salary" as category,
+                                  count(income) as accounts_count
+                                  from Accounts
+                                  where income < 20000                                  
+                                  UNION
+                                  select "Average Salary" as category,
+                                  count(income) as accounts_count
+                                  from Accounts
+                                  where income >= 20000 && income <= 50000
+                                  UNION
+                                  select "High Salary" as category,
+                                  count(income) as accounts_count
+                                  from Accounts
+                                  where income > 50000;
+
+  Output:-
+  | category       | accounts_count |
+  | -------------- | -------------- |
+  | Low Salary     | 1              |
+  | Average Salary | 0              |
+  | High Salary    | 3              |
