@@ -49,3 +49,60 @@ Output:-
 | 3  | Green   |
 | 4  | Emerson |
 | 5  | Jeames  |
+
+## 3. Movie Rating.
+Find the name of the user who has rated the greatest number of movies. In case of a tie, return the lexicographically smaller user name.
+Find the movie name with the highest average rating in February 2020. In case of a tie, return the lexicographically smaller movie name.
+Table:- Movies
+| movie_id | title    |
+| -------- | -------- |
+| 1        | Avengers |
+| 2        | Frozen 2 |
+| 3        | Joker    |
+
+Table:- Users
+| user_id | name   |
+| ------- | ------ |
+| 1       | Daniel |
+| 2       | Monica |
+| 3       | Maria  |
+| 4       | James  |
+
+Table:- MovieRating
+| movie_id | user_id | rating | created_at |
+| -------- | ------- | ------ | ---------- |
+| 1        | 1       | 3      | 2020-01-12 |
+| 1        | 2       | 4      | 2020-02-11 |
+| 1        | 3       | 2      | 2020-02-12 |
+| 1        | 4       | 1      | 2020-01-01 |
+| 2        | 1       | 5      | 2020-02-17 |
+| 2        | 2       | 2      | 2020-02-01 |
+| 2        | 3       | 2      | 2020-03-01 |
+| 3        | 1       | 3      | 2020-02-22 |
+| 3        | 2       | 4      | 2020-02-25 |
+
+                                
+                            SELECT user_name as results FROM
+                            (
+                                SELECT b.name as user_name,COUNT(*) as counts FROM MovieRating as a
+                                JOIN Users as b
+                                ON a.user_id=b.user_id
+                                GROUP BY a.user_id
+                                ORDER BY counts DESC,user_name ASC LIMIT 1
+                            ) first_query
+                            UNION ALL
+                            SELECT movie_name as results FROM
+                            (
+                                SELECT d.title as movie_name,AVG(c.rating) as grade FROM MovieRating as c
+                                JOIN Movies as d
+                                ON c.movie_id=d.movie_id
+                                WHERE SUBSTR(c.created_at,1,7)="2020-02"
+                                GROUP BY c.movie_id
+                                ORDER BY grade DESC,movie_name ASC LIMIT 1
+                            ) second_query;
+
+Output:- 
+    | results  |
+    | -------- |
+    | Daniel   |
+    | Frozen 2 |
